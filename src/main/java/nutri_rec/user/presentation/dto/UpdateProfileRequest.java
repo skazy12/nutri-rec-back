@@ -16,5 +16,6 @@ public record UpdateProfileRequest(
         BigDecimal caloriasDiarias,
 
         List<String> restricciones,
-        List<Integer> excluirIds
+        List<Integer> excluirIds,
+        Boolean almuerzoCenaMisma
 ) {}

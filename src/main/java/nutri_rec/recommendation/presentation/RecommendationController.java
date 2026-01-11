@@ -78,6 +78,7 @@ public class RecommendationController {
                 profile.getObjetivoNutricional(),
                 dias,
                 topN,
+                profile.getAlmuerzoCenaMisma(),
                 excluirIds
         );
 

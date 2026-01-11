@@ -28,5 +28,6 @@ public record MeProfileViewResponse(
 
         // Última sesión del plan
         Integer dias_plan,
-        Integer top_n_recetas
+        Integer top_n_recetas,
+        Boolean almuerzoCenaMisma
 ) {}

@@ -72,6 +72,10 @@ public class UserProfile {
     @Column(name = "excluir_ids", columnDefinition = "text")
     private String excluirIdsJson;
 
+    @Column(name = "almuerzo_cena_misma", nullable = false)
+    private Boolean almuerzoCenaMisma = false;
+
+
 
     @PrePersist
     public void prePersist() {

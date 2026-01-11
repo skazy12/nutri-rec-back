@@ -58,12 +58,20 @@ public class PersistPlanFromModelUseCase {
                 String comida = row.path("Comida").asText(); // "Desayuno", "Almuerzo", "Cena", "Snack", "Snack1", "Snack2"
                 int recipeId = row.path("ID_Receta").asInt();
 
-                // Orden: 1..n dentro del día
+                // Reset por día
                 if (dia != currentDay) {
                     currentDay = dia;
                     snackCounterPerDay = 0;
                 }
-                int orden = computeOrden(comida, ++snackCounterPerDay);
+
+                // ✅ Snack counter SOLO para snacks
+                int orden;
+                if (isSnack(comida)) {
+                    snackCounterPerDay++;
+                    orden = computeOrden(comida, snackCounterPerDay); // snacks: 4,5,...
+                } else {
+                    orden = computeOrden(comida, 0); // desayuno/almuerzo/cena
+                }
 
                 itemRepo.save(PlanItem.builder()
                         .planSessionId(session.getId())
@@ -79,13 +87,18 @@ public class PersistPlanFromModelUseCase {
         return session.getId();
     }
 
-    private int computeOrden(String comida, int snackCounter) {
+    private boolean isSnack(String comida) {
+        String c = comida == null ? "" : comida.trim().toLowerCase();
+        return !(c.startsWith("desayuno") || c.startsWith("almuerzo") || c.startsWith("cena"));
+    }
+
+    private int computeOrden(String comida, int snackIndex) {
         // orden estándar para UI: Desayuno(1) Almuerzo(2) Cena(3) Snacks(4+)
         String c = comida == null ? "" : comida.trim().toLowerCase();
         if (c.startsWith("desayuno")) return 1;
         if (c.startsWith("almuerzo")) return 2;
         if (c.startsWith("cena")) return 3;
-        return 3 + snackCounter; // snacks
+        return 3 + snackIndex; // snackIndex=1 => 4, snackIndex=2 => 5, ...
     }
 
     private String safeWriteJson(Object obj) {

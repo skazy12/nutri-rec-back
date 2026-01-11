@@ -18,6 +18,8 @@ public record ModelApiRequest(
         String objetivo_nutricional,
         Integer dias_plan,
         Integer top_n_recetas,
+        @JsonProperty("almuerzoCenaMisma")
+        Boolean almuerzoCenaMisma,
         @JsonProperty("excluir_ids")
         List<Integer> excluirIds
 ) {}

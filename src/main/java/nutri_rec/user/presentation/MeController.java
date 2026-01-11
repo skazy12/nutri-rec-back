@@ -68,7 +68,8 @@ public class MeController {
 
                 // Última sesión
                 diasPlan,
-                topN
+                topN,
+                profile.getAlmuerzoCenaMisma()
         ));
     }
 
@@ -88,6 +89,8 @@ public class MeController {
         profile.setComidasDiarias(body.comidasDiarias());
         profile.setTipoDieta(body.tipoDieta());
         profile.setObjetivoNutricional(body.objetivoNutricional());
+        profile.setAlmuerzoCenaMisma(body.almuerzoCenaMisma() != null ? body.almuerzoCenaMisma() : false);
+
 
         var om = new ObjectMapper();
 

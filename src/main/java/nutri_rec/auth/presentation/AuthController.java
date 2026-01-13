@@ -60,6 +60,7 @@ public class AuthController {
         var profile = UserProfile.builder()
                 .id(UUID.randomUUID())
                 .userId(userId)
+                .almuerzoCenaMisma(false)
                 .createdAt(Instant.now())
                 .updatedAt(Instant.now())
                 .build();

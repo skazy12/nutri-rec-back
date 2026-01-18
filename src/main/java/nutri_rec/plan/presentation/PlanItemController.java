@@ -41,11 +41,12 @@ public class PlanItemController {
             @RequestAttribute("userId") UUID userId,
             @PathVariable UUID planItemId,
             @RequestBody SwapRequest body
+
     ) {
         if (body.newRecipeId() <= 0) {
             throw new RuntimeException("newRecipeId inválido");
         }
-        swapUseCase.execute(userId, planItemId, body.newRecipeId(), body.motivo());
+        swapUseCase.execute(userId, planItemId, body.newRecipeId(), body.motivo(), body.fecha());
         return ResponseEntity.ok().body("swap_ok=true");
     }
 }

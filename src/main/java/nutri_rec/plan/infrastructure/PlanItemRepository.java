@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface PlanItemRepository extends JpaRepository<PlanItem, UUID> {
     List<PlanItem> findByPlanSessionIdOrderByDiaAscOrdenAsc(UUID planSessionId);
     Optional<PlanItem> findById(UUID id);
+    List<PlanItem> findByPlanSessionIdAndDiaOrderByOrdenAsc(UUID planSessionId, Integer dia);
+
 }

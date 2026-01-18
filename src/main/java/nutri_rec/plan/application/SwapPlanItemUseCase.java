@@ -8,6 +8,7 @@ import nutri_rec.recipe.infrastructure.RecipeRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -28,14 +29,18 @@ public class SwapPlanItemUseCase {
         this.recipeRepo = recipeRepo;
     }
 
-    public void execute(UUID userId, UUID planItemId, int newRecipeId, String motivo) {
+    public void execute(UUID userId, UUID planItemId, int newRecipeId, String motivo, LocalDate fecha) {
+
+        if (fecha == null) {
+            throw new RuntimeException("La fecha es obligatoria para cambiar una receta.");
+        }
 
         var item = planItemRepo.findById(planItemId)
                 .orElseThrow(() -> new RuntimeException("Plan item no encontrado"));
 
-        // Regla de negocio recomendada: NO permitir swap si ya consumió ese item alguna vez.
-        if (logRepo.existsByUserIdAndPlanItemIdAndConsumidoIsTrue(userId, planItemId)) {
-            throw new RuntimeException("No puedes cambiar esta receta porque ya fue marcada como consumida.");
+        /* Regla de negocio: NO permitir swap si ya consumió ese item en esa fecha */
+        if (logRepo.existsByUserIdAndPlanItemIdAndFechaAndConsumidoIsTrue(userId, planItemId, fecha)) {
+            throw new RuntimeException("No puedes cambiar esta receta porque ya fue marcada como consumida en esta fecha.");
         }
 
         // Validar que la receta exista
